@@ -9,6 +9,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { PostService } from './services/post.service';
 import { PostListItemComponent } from './components/post-list-item/post-list-item.component';
 import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
+import { CategoryService } from './services/category.service';
+import { PostCreationComponent } from './components/post-creation/post-creation.component';
 
 @NgModule({
   declarations: [
@@ -16,14 +19,19 @@ import { CommonModule } from '@angular/common';
     TopBarComponent,
     PostListComponent,
     PostListItemComponent,
+    PostCreationComponent,
   ],
   imports: [
     CommonModule,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    ReactiveFormsModule,
   ],
-  providers: [PostService],
+  providers: [
+    PostService,
+    CategoryService,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
