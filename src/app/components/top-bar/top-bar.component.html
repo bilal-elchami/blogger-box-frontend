@@ -1,7 +1,7 @@
 <nav class="navbar bg-body-tertiary">
   <div class="container-fluid">
     <a [routerLink]="['/']" class="navbar-brand">Blogger-Box</a>
-    <button class="btn btn-outline-success" (click)="goToCreatePost()">
+    <button [routerLink]="['/add-post']" class="btn btn-outline-success">
       Post <i class="bi bi-pencil"></i>
     </button>
   </div>
