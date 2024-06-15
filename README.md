@@ -1,27 +1,22 @@
-# SampleApp
+# Blogger-Box Frontend
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.1.
+Welcome to the Blogger-Box Project frontend implementation. Note that there is no single correct way to develop an application. Code implementation and preferences may vary from one developer to another. However, the primary goal is to deliver a stable application with easily maintainable code.
 
-## Development server
+## Architecture
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+<p align="center">
+  <img src="src/assets/images/architecture.png" alt="architecture">
+</p>
 
-## Code scaffolding
+## Database Diagram
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+<p align="center">
+  <img src="src/assets/images/database.png" alt="database">
+</p>
 
-## Build
+## Main Features
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+- **List all Posts on the Home Screen**: Displays a comprehensive list of all blog posts on the main page for easy navigation and reading.
+- **Publish Posts**: Allows users to create and publish new blog posts through an intuitive interface.
+- **Form Validations**: Ensures that all forms within the application are validated for correctness and completeness before submission.
+- **Integration of "SweetAlert2"**: Utilizes "SweetAlert2", an open-source library, for enhanced alert and pop-up functionalities within the application.
