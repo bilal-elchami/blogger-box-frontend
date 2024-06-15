@@ -26,10 +26,6 @@ export class PostService extends BaseService {
   getAll(): Observable<Post[]> {
     return this.http.get<Post[]>(this.postsUrl)
       .pipe(
-        map((posts) => {
-          posts.forEach((post) => (post.createdDate = new Date()));
-          return posts;
-        }),
         catchError(this.handleError<Post[]>('getAll', []))
       );
   }
