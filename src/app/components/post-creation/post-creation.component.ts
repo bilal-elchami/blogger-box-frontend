@@ -6,7 +6,7 @@ import { Category } from '../../data/category';
 import { CategoryService } from '../../services/category.service';
 import { PostCreateInput } from '../../data/post';
 import { PostService } from '../../services/post.service';
-import Swal from 'sweetalert2'
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-post-creation',
@@ -23,6 +23,7 @@ export class PostCreationComponent implements OnInit {
     private fb: FormBuilder,
     private categoryService: CategoryService,
     private postService: PostService,
+    private toastService: ToastService,
     private router: Router,
   ) { }
 
@@ -52,40 +53,12 @@ export class PostCreationComponent implements OnInit {
       // Send the post instance to the backend and subscribe to the response
       // in order to close the modal
       this.postService.create(newPost).subscribe((res) => {
-        const Toast = Swal.mixin({
-          toast: true,
-          position: "top-end",
-          showConfirmButton: false,
-          timer: 3000,
-          timerProgressBar: true,
-          didOpen: (toast) => {
-            toast.onmouseenter = Swal.stopTimer;
-            toast.onmouseleave = Swal.resumeTimer;
-          }
-        });
-        Toast.fire({
-          icon: "success",
-          title: "Post Submitted Successfully"
-        });
+        this.toastService.showToast("Post Submitted Successfully", "success");
         this.goToHomePage();
       });
     } else {
       // Show an error toast when the form is not valid
-      const Toast = Swal.mixin({
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 5000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.onmouseenter = Swal.stopTimer;
-          toast.onmouseleave = Swal.resumeTimer;
-        }
-      });
-      Toast.fire({
-        icon: "error",
-        title: "Please review your post"
-      });
+      this.toastService.showToast("Please review your post", "error");
     }
   }
 

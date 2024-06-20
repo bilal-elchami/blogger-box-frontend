@@ -1,11 +1,14 @@
-import { Observable, of } from "rxjs";
+import { Observable, catchError, of } from "rxjs";
 import { environment } from "../environment/environment";
+import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
 
 /**
  * Base service providing common functionalities for services interacting with APIs.
  * For example, it includes the base URL of the API and a method for handling HTTP errors.
  */
-export default class BaseService {
+@Injectable()
+export default abstract class BaseService<ENTITY, ENTITY_CREATE_INPUT> {
 
   /**
    * The base URL of the API, including the version prefix and ending with a trailing slash.
@@ -13,6 +16,10 @@ export default class BaseService {
    * No need to add extra slashes when using it for API endpoints.
    */
   protected baseUrl = environment.apiUrl;
+
+  constructor(protected http: HttpClient) {}
+
+  abstract getEndpointUrl(): string;
 
   /**
    * Handles HTTP errors.
@@ -32,4 +39,62 @@ export default class BaseService {
     };
   }
 
+  /**
+   * Fetches all categories from the server.
+   * @returns An Observable emitting an array of objects.
+   */
+  getAll(): Observable<ENTITY[]> {
+    return this.http.get<ENTITY[]>(this.getEndpointUrl())
+      .pipe(
+        catchError(this.handleError<ENTITY[]>('getAll', []))
+      );
+  }
+
+  /**
+   * Fetches a single entity by its ID.
+   * @param id - The ID of the entity to fetch.
+   * @returns An Observable emitting a single entity object.
+   */
+  getById(id: string): Observable<ENTITY> {
+    return this.http.get<ENTITY>(`${this.getEndpointUrl()}/${id}`)
+      .pipe(
+        catchError(this.handleError<ENTITY>('getById', undefined))
+      );
+  }
+
+  /**
+   * Updates an existing entity.
+   * @param entity - The updated entity object.
+   * @returns An Observable emitting the updated Entity object.
+   */
+  update(entity: ENTITY): Observable<ENTITY> {
+    return this.http.put<ENTITY>(this.getEndpointUrl(), entity)
+      .pipe(
+        catchError(this.handleError<ENTITY>('update', entity))
+      );
+  }
+
+  /**
+   * Deletes a entity.
+   * @param entity - The Entity object to delete.
+   * @returns An Observable emitting a boolean value indicating whether the deletion was successful.
+   */
+  delete(entity: ENTITY & { id: string }): Observable<boolean> {
+    return this.http.delete<boolean>(`${this.getEndpointUrl()}/${entity.id}`)
+      .pipe(
+        catchError(this.handleError<boolean>('delete', false))
+      );
+  }
+
+  /**
+   * Creates a new entity.
+   * @param entity - The Entity Create Input object containing the data for the new entity.
+   * @returns An Observable emitting the created entity object.
+   */
+  create(entity: ENTITY_CREATE_INPUT): Observable<ENTITY> {
+    return this.http.post<ENTITY>(this.getEndpointUrl(), entity)
+      .pipe(
+        catchError(this.handleError<ENTITY>('create', undefined))
+      );
+  }
 }

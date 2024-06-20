@@ -1,10 +1,9 @@
-import { HttpClient } from "@angular/common/http";
 import { Observable, catchError } from "rxjs";
 import { Injectable } from "@angular/core";
 
-import BaseService from "./base.service";
 import { Category, CategoryCreateInput } from "../data/category";
 import { Post } from "../data/post";
+import BaseService from "./base.service";
 
 /**
  * Service for managing operations related to categories.
@@ -12,23 +11,12 @@ import { Post } from "../data/post";
  * It provides methods to interact with the server-side API for categories.
  */
 @Injectable()
-export class CategoryService extends BaseService {
+export class CategoryService extends BaseService<Category, CategoryCreateInput> {
 
   private categoriesUrl = `${this.baseUrl}v1/categories`;
 
-  constructor(private http: HttpClient) {
-    super();
-  }
-
-  /**
-   * Fetches all categories from the server.
-   * @returns An Observable emitting an array of Category objects.
-   */
-  getAll(): Observable<Category[]> {
-    return this.http.get<Category[]>(this.categoriesUrl)
-      .pipe(
-        catchError(this.handleError<Category[]>('getAll', []))
-      );
+  override getEndpointUrl(): string {
+    return this.categoriesUrl;
   }
 
   /**
@@ -40,54 +28,6 @@ export class CategoryService extends BaseService {
     return this.http.get<Category[]>(`${this.categoriesUrl}/name=${text}`)
       .pipe(
         catchError(this.handleError<Category[]>('getLikeName', []))
-      );
-  }
-
-  /**
-   * Fetches a single category by its ID.
-   * @param id - The ID of the category to fetch.
-   * @returns An Observable emitting a single Category object.
-   */
-  getById(id: string): Observable<Category> {
-    return this.http.get<Category>(`${this.categoriesUrl}/${id}`)
-      .pipe(
-        catchError(this.handleError<Category>('getById', undefined))
-      );
-  }
-
-  /**
-   * Updates an existing category.
-   * @param category - The updated Category object.
-   * @returns An Observable emitting the updated Category object.
-   */
-  update(category: Category): Observable<Category> {
-    return this.http.put<Category>(this.categoriesUrl, category)
-      .pipe(
-        catchError(this.handleError<Category>('getLikeName', category))
-      );
-  }
-
-  /**
-   * Deletes a category.
-   * @param category - The Category object to delete.
-   * @returns An Observable emitting a boolean value indicating whether the deletion was successful.
-   */
-  delete(category: Category): Observable<boolean> {
-    return this.http.delete<boolean>(`${this.categoriesUrl}/${category.id}`)
-      .pipe(
-        catchError(this.handleError<boolean>('delete', false))
-      );
-  }
-
-  /**
-   * Creates a new category.
-   * @param category - The CategoryCreateInput object containing the data for the new category.
-   * @returns An Observable emitting the created Category object.
-   */
-  create(category: CategoryCreateInput): Observable<Category> {
-    return this.http.post<Category>(this.categoriesUrl, category)
-      .pipe(
-        catchError(this.handleError<Category>('create', undefined))
       );
   }
 
